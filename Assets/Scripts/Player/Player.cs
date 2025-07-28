@@ -4,19 +4,13 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private float moveSpeed = 5f;
-    [SerializeField]
-    private float jumpForce = 10f;
-    [SerializeField]
-    private float rotationSpeed = 0.5f; // For mouse rotation
+    
 
-    private Rigidbody rb;
-    private bool isGrounded;
+    
     private int score = 0;
     private float health = 30f;
     private bool isJumping = false;
-    private float yaw; // For mouse rotation
+   
 
     // Tightly coupled dependency to GameManager
     [SerializeField]
@@ -30,15 +24,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        if (rb == null)
-        {
-            Debug.LogError("Player needs a Rigidbody component!");
-        }
-        // Freeze rotation to prevent physics flipping the player
-        rb.freezeRotation = true;
-        Cursor.lockState = CursorLockMode.Locked; // Lock cursor to screen center
-        
         if (gameManager == null)
         {
             gameManager = FindFirstObjectByType<GameManager>();
