@@ -117,11 +117,5 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         
-
-        Vector3 direction = transform.forward * v + transform.right * h;
-        Vector3 velocity = direction.normalized * moveSpeed;
-
-        Vector3 newPos = rb.position + velocity * Time.fixedDeltaTime;
-        rb.MovePosition(newPos);
     }
 }

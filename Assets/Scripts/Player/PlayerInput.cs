@@ -4,6 +4,7 @@ public class PlayerInput : MonoBehaviour
 {
     private PlayerMovement playerMovement;
     
+    
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
@@ -16,9 +17,12 @@ public class PlayerInput : MonoBehaviour
         float v = Input.GetAxis("Vertical");
         // Handle rotation with mouse
         float mouseX = Input.GetAxis("Mouse X"); //* rotationSpeed;
-        //yaw += mouseX;
-        //transform.rotation = Quaternion.Euler(0f, yaw, 0f);
-        
+                                                 //yaw += mouseX;
+                                                 //transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+
+        PlayerMovement.Move(h, v);
+        PlayerMovement.Rotate(mouseX);
+
         if (Input.GetButtonDown("Jump"))
         {
             playerMovement.Jump();
@@ -29,13 +33,5 @@ public class PlayerInput : MonoBehaviour
             GameManager.Instance.RestartGame();
         }
 
-        // Jumping Logic (Monolithic, handles animation state and physics)
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-            isJumping = true; // Simple animation state
-            Debug.Log("Player jumped!");
-        }
     }
 }
