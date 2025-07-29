@@ -2,8 +2,23 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour // start of singelton
 {
+    public static GameManger Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // makes sure only one inst.
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject); // prepare if I/we want to add scenes.
+
+    }
+
     // Game state variables
     public bool gameOver = false;
     public float gameTime = 0f;
@@ -49,11 +64,6 @@ public class GameManager : MonoBehaviour
             gameTime += Time.deltaTime;
             UpdateTimerUI();
 
-            // Handles input for restarting the game (monolithic and poor separation of concerns)
-            if (Input.GetKeyDown(KeyCode.R)) // R to Restart
-            {
-                RestartGame();
-            }
             // Win condition (tightly coupled)
             if (player.GetScore() >= 30) // Direct access to player score
             {

@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     
     private int score = 0;
     private float health = 30f;
-    private bool isJumping = false;
+    //private bool isJumping = false;
    
 
     // Tightly coupled dependency to GameManager
@@ -45,19 +45,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Handle rotation with mouse
-        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
-        yaw += mouseX;
-        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
-
-        // Jumping Logic (Monolithic, handles animation state and physics)
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-            isJumping = true; // Simple animation state
-            Debug.Log("Player jumped!");
-        }
+        
 
 
         // Game Over condition tightly coupled here
@@ -128,9 +116,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Handle movement
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        
 
         Vector3 direction = transform.forward * v + transform.right * h;
         Vector3 velocity = direction.normalized * moveSpeed;

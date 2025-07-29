@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 0.5f; // For mouse rotation
 
+    private bool isJumping = false;
     private Rigidbody rb;
     private bool isGrounded;
     private float yaw = 0f; // For mouse rotation
