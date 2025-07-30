@@ -20,8 +20,8 @@ public class PlayerInput : MonoBehaviour
                                                  //yaw += mouseX;
                                                  //transform.rotation = Quaternion.Euler(0f, yaw, 0f);
 
-        PlayerMovement.Move(h, v);
-        PlayerMovement.Rotate(mouseX);
+        playerMovement.Move(h, v);
+        playerMovement.Rotate(mouseX);
 
         if (Input.GetButtonDown("Jump"))
         {

@@ -26,11 +26,25 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // Lock cursor to screen center  
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-
+        
     }
 
+    public void Move(float h, float v)
+    {
+        Vector3 direction = transform.forward * v + transform.right * h;
+        Vector3 velocity = direction.normalized * moveSpeed;
+
+        Vector3 newPos = rb.position + velocity * Time.fixedDeltaTime;
+        rb.MovePosition(newPos);
+    }
+
+    public void Rotate(float mouseX)
+    {
+        yaw += mouseX;
+        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+    }
     public void Jump()
     {
         if (!isGrounded) return;

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour // start of singelton
 {
-    public static GameManger Instance { get; private set; }
+    public static GameManager Instance { get; private set; }
 
     private void Awake()
     {
