@@ -61,11 +61,7 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-            isJumping = false;
-        }
+        
 
         // Collecting collectibles (Monolithic, handles score and interaction)
         if (collision.gameObject.CompareTag("Collectible"))

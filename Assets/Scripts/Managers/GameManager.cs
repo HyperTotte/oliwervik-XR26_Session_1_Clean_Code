@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour // start of singelton
 
         Instance = this;
         DontDestroyOnLoad(gameObject); // prepare if I/we want to add scenes.
-
     }
 
     // Game state variables

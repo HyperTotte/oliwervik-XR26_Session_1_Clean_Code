@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -10,9 +11,11 @@ public class PlayerMovement : MonoBehaviour
     private float jumpForce = 10f;
     [SerializeField]
     private float rotationSpeed = 0.5f; // For mouse rotation
+    [SerializeField] private GroundChecker groundChecker;
 
-    private bool isJumping = false;
-    private bool isGrounded;
+
+    //private bool isJumping = false;
+    
     private float yaw = 0f; // For mouse rotation
     private void Start()
     {
@@ -47,11 +50,9 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Jump()
     {
-        if (!isGrounded) return;
+        if (groundChecker.IsGrounded)
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        isGrounded = false;
-        isJumping = true; // Simple animation state
         Debug.Log("Player jumped!");
     }
 
