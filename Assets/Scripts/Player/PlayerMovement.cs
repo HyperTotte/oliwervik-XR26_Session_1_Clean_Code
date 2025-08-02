@@ -6,11 +6,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Rigidbody rb;
     [SerializeField]
-    private float moveSpeed = 5f;
+    private float moveSpeed = 1f;
     [SerializeField]
     private float jumpForce = 10f;
     [SerializeField]
-    private float rotationSpeed = 0.5f; // For mouse rotation
+    private float rotationSpeed = 0.3f; // For mouse rotation
     [SerializeField] private GroundChecker groundChecker;
 
 
@@ -56,12 +56,6 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Player jumped!");
     }
 
-    /*   this is from player script. old code movement & input coupled...
-        Vector3 direction = transform.forward * v + transform.right * h;
-        Vector3 velocity = direction.normalized * moveSpeed;
-
-        Vector3 newPos = rb.position + velocity * Time.fixedDeltaTime;
-        rb.MovePosition(newPos);
-    */
+    
     
 }
