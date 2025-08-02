@@ -5,20 +5,11 @@ using UnityEngine;
 public class PlayerScore : MonoBehaviour, ICollisionHandler
 {
     public event Action OnWin;
+    public event Action<float> OnScoring;
     private float score = 0f;
+    public float Score => score;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     public void HandleCollisionEnter(Collision collision)
     {
@@ -38,6 +29,7 @@ public class PlayerScore : MonoBehaviour, ICollisionHandler
     {
         score += amount;
         //UpdateScoreUI();
+        OnScoring?.Invoke(score);
         Debug.Log("Collected! Score: " + score);
 
         if(score >= 30)

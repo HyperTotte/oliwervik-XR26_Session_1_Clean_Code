@@ -1,5 +1,6 @@
+using JetBrains.Annotations;
+using System;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour // start of singelton
@@ -17,33 +18,24 @@ public class GameManager : MonoBehaviour // start of singelton
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // prepare if I/we want to add scenes.
+        // DontDestroyOnLoad(gameObject); // prepared if I/we want to add scenes.    disable because of the restart logic 
     }
+
+    public event Action<float> OnTimeChanged;
 
     // Game state variables
     public bool gameOver = false;
-    public float gameTime = 0f;
-
-    // UI elements directly managed by GameManager (tight coupling)
-    [SerializeField]
-    private TextMeshProUGUI gameStatusText;
-    [SerializeField]
-    private TextMeshProUGUI timerText;
-    [SerializeField]
-    private GameObject gameOverPanel; 
-
-    // Tightly coupled dependency to Player (violating Separation of Concerns)
-    [SerializeField]
-    private Player player;
-
+    private float gameTime = 0f;
+    
     private void Start()
     {
+        
+
         if (playerScore != null)
         {
             playerScore.OnWin += WinGame;
             Debug.Log("Subscribed to PlayerScore.OnWin");
         }
-
 
         if (playerHealth != null)
         {
@@ -55,28 +47,10 @@ public class GameManager : MonoBehaviour // start of singelton
             Debug.LogError("playerHealth referance missing in gamemanager");
             /*
              * had problem where the GameOver() would not be called. 
-             * it was that playerhealth was on gamemanager and not player.
+             * it was that playerhealth was on gamemanager and not player, thought that script was gonna go in s.field but it would'nt take that.
              * fix: attacth playerhealth on player. in gamemanager, s.field "playerhealth" attacth player (object).
              */
-        }
-        // Initialize UI
-        if (gameStatusText != null)
-        {
-            gameStatusText.text = "Game Started!";
-        }
-        if (player == null)
-        {
-            player = FindFirstObjectByType<Player>();
-            if (player == null)
-            {
-                Debug.LogError("GameManager cannot find Player script!");
-            }
-        }
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(false);
-        }
-        Debug.Log("GameManager initialized.");
+        }        
     }
 
     void Update()
@@ -84,23 +58,11 @@ public class GameManager : MonoBehaviour // start of singelton
         if (!gameOver)
         {
             gameTime += Time.deltaTime;
-            UpdateTimerUI();
-
-            // Win condition (tightly coupled)
-            //if (player.GetScore() >= 30) // Direct access to player score
-            //{
-            //    WinGame();
-            //}
+            OnTimeChanged?.Invoke(gameTime);
         }
     }
 
-    private void UpdateTimerUI()
-    {
-        if (timerText != null)
-        {
-            timerText.text = "Time: " + Mathf.FloorToInt(gameTime).ToString() + "s";
-        }
-    }
+    
 
     public void GameOver()
     {
@@ -109,15 +71,6 @@ public class GameManager : MonoBehaviour // start of singelton
         {
             gameOver = true;
             Debug.Log("Game Over!");
-            if (gameStatusText != null)
-            {
-                gameStatusText.text = "GAME OVER!";
-            }
-            if (gameOverPanel != null)
-            {
-                gameOverPanel.SetActive(true);
-            }
-
             Invoke(nameof(RestartGame), 2f); // Restart after 2 seconds
         }
     }
@@ -127,12 +80,6 @@ public class GameManager : MonoBehaviour // start of singelton
         if (!gameOver) // Ensure win can only happen once
         {
             gameOver = true;
-            //Debug.Log("You Win! Score: " + player.GetScore()); // Direct access to player score
-            if (gameStatusText != null)
-            {
-                //gameStatusText.text = "YOU WIN! Score: " + player.GetScore();
-            }
-
             Invoke(nameof(RestartGame), 2f); // Restart after 2 seconds
         }
     }
