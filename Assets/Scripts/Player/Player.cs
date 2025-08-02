@@ -4,14 +4,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    
-
-    
-    private int score = 0;
-    private float health = 30f;
-    //private bool isJumping = false;
+ 
    
-
     // Tightly coupled dependency to GameManager
     [SerializeField]
     private GameManager gameManager;
@@ -32,15 +26,15 @@ public class Player : MonoBehaviour
                 Debug.LogError("Player cannot find GameManager!");
             }
         }
-        UpdateScoreUI();
-        UpdateHealthUI();
+        //UpdateScoreUI();
+        //UpdateHealthUI();   add when fix UI
         
         // Initialize health bar max value
-        if (healthBar != null)
-        {
-            healthBar.maxValue = 30f; // Set to match max health value
-            healthBar.value = health; // Ensure current value matches
-        }
+        //if (healthBar != null)
+        //{
+        //    healthBar.maxValue = 30f; // Set to match max health value
+        //    healthBar.value = health; // Ensure current value matches
+        //}  add later?
     }
 
     void Update()
@@ -48,70 +42,36 @@ public class Player : MonoBehaviour
         
 
 
-        // Game Over condition tightly coupled here
-        if (health <= 0)
-        {
-            Debug.Log("Player defeated!");
-            if (gameManager != null)
-            {
-                gameManager.GameOver(); // Direct call to GameManager
-            }
-        }
+       
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        
-
-        // Collecting collectibles (Monolithic, handles score and interaction)
-        if (collision.gameObject.CompareTag("Collectible"))
-        {
-            score += 10;
-            UpdateScoreUI();
-            Destroy(collision.gameObject);
-            Debug.Log("Collected! Score: " + score);
-        }
-
-        // Enemy collision (damages player)
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            TakeDamage(10);
-            Destroy(collision.gameObject);
-            Debug.Log("Player hit by enemy! Health: " + health);
-        }
-    }
 
     // Health management (Monolithic, includes UI logic)
-    public void TakeDamage(float amount)
-    {
-        health -= amount;
-        health = Mathf.Max(health, 0); // Health won't go below zero
-        UpdateHealthUI();
-    }
+    //public void TakeDamage(float amount)
+    //{
+    //    health -= amount;
+    //    health = Mathf.Max(health, 0); // Health won't go below zero
+    //    UpdateHealthUI();
+    //}
 
-    private void UpdateScoreUI()
-    {
-        if (scoreText != null)
-        {
-            scoreText.text = "Score: " + score;
-        }
-    }
+    //private void UpdateScoreUI()
+    //{
+    //    if (scoreText != null)
+    //    {
+    //        scoreText.text = "Score: " + score;
+    //    }
+    //} 
 
-    private void UpdateHealthUI()
-    {
-        if (healthBar != null)
-        {
-            healthBar.value = health;
-        }
-    }
+    //private void UpdateHealthUI()
+    //{
+    //    if (healthBar != null)
+    //    {
+    //        healthBar.value = health;
+    //    }
+    //}
 
-    public int GetScore()
-    {
-        return score;
-    }
-
-    void FixedUpdate()
-    {
-        
-    }
+    //public int GetScore()
+    //{
+    //    return score;
+    //}
 }

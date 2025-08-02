@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour // start of singelton
 {
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private PlayerScore playerScore;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -34,8 +36,29 @@ public class GameManager : MonoBehaviour // start of singelton
     [SerializeField]
     private Player player;
 
-    void Start()
+    private void Start()
     {
+        if (playerScore != null)
+        {
+            playerScore.OnWin += WinGame;
+            Debug.Log("Subscribed to PlayerScore.OnWin");
+        }
+
+
+        if (playerHealth != null)
+        {
+            playerHealth.OnDeath += GameOver;
+            Debug.Log("subscribed to playerHealth.OnDeatth");
+        }
+        else
+        {
+            Debug.LogError("playerHealth referance missing in gamemanager");
+            /*
+             * had problem where the GameOver() would not be called. 
+             * it was that playerhealth was on gamemanager and not player.
+             * fix: attacth playerhealth on player. in gamemanager, s.field "playerhealth" attacth player (object).
+             */
+        }
         // Initialize UI
         if (gameStatusText != null)
         {
@@ -64,10 +87,10 @@ public class GameManager : MonoBehaviour // start of singelton
             UpdateTimerUI();
 
             // Win condition (tightly coupled)
-            if (player.GetScore() >= 30) // Direct access to player score
-            {
-                WinGame();
-            }
+            //if (player.GetScore() >= 30) // Direct access to player score
+            //{
+            //    WinGame();
+            //}
         }
     }
 
@@ -81,6 +104,7 @@ public class GameManager : MonoBehaviour // start of singelton
 
     public void GameOver()
     {
+        Debug.Log("starting Game over ()");
         if (!gameOver)
         {
             gameOver = true;
@@ -103,10 +127,10 @@ public class GameManager : MonoBehaviour // start of singelton
         if (!gameOver) // Ensure win can only happen once
         {
             gameOver = true;
-            Debug.Log("You Win! Score: " + player.GetScore()); // Direct access to player score
+            //Debug.Log("You Win! Score: " + player.GetScore()); // Direct access to player score
             if (gameStatusText != null)
             {
-                gameStatusText.text = "YOU WIN! Score: " + player.GetScore();
+                //gameStatusText.text = "YOU WIN! Score: " + player.GetScore();
             }
 
             Invoke(nameof(RestartGame), 2f); // Restart after 2 seconds
