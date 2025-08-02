@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour, ICollisionHandler
         if (collision.gameObject.CompareTag("Enemy"))
         {
             TakeDamage(10);
+            Destroy(collision.gameObject);
         }
     }
 
